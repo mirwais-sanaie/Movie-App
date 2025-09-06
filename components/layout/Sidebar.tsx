@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { Heart, Star, Calendar } from "lucide-react";
+import { getGenres } from "@/lib/data-services";
+import Logo from "./Logo";
+import { Button } from "../ui/button";
+import { FaRegCircleDot } from "react-icons/fa6";
+import type { Genre } from "@/types/type";
 
 const discoverLinks = [
   {
@@ -19,66 +24,61 @@ const discoverLinks = [
   },
 ];
 
-const genres = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "History",
-  "Horror",
-];
-
-export default function Sidebar() {
+export default async function Sidebar() {
+  const { genres } = await getGenres();
+  console.log(genres);
   return (
-    <aside className="w-64 h-screen bg-sidebar border-r border-sidebar-border text-sidebar-foreground flex flex-col">
+    <aside className="w-64 pb-12 h-screen flex flex-col bg-muted">
       {/* Logo */}
       <div className="flex items-center justify-center h-20">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center rounded-lg font-bold">
-            🎟️
-          </div>
-          <span className="text-lg font-semibold">Movie App</span>
+          <Logo />
         </div>
       </div>
 
       {/* Discover Section */}
-      <nav className="flex-1 overflow-y-auto px-4 py-6">
+      <nav className="flex-1 overflow-y-auto px-4 py-6 text-sidebar-primary">
         <div>
-          <h3 className="text-sm font-semibold mb-2">Discover</h3>
+          <h3 className="text-sm font-semibold mb-2 text-foreground">
+            Discover
+          </h3>
           <ul className="space-y-2">
             {discoverLinks.map((item) => (
-              <li key={item.name}>
+              <Button
+                variant={"link"}
+                className="text-sidebar-primary list-none"
+                key={item.name}
+              >
                 <Link
                   href={item.href}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
                 >
                   {item.icon}
                   {item.name}
                 </Link>
-              </li>
+              </Button>
             ))}
           </ul>
         </div>
 
         {/* Genres Section */}
         <div className="mt-6">
-          <h3 className="text-sm font-semibold mb-2">Genres</h3>
-          <ul className="space-y-2">
-            {genres.map((genre) => (
-              <li key={genre}>
+          <h3 className="text-sm font-semibold mb-2 text-foreground">Genres</h3>
+          <ul className="space-y-2 flex flex-col text-start">
+            {genres?.map((genre: Genre) => (
+              <Button
+                variant={"link"}
+                className="text-sidebar-primary flex justify-start"
+                key={genre.id}
+              >
                 <Link
-                  href={`/genre/${genre.toLowerCase()}`}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                  href={`/genre`}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors"
                 >
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground"></span>
-                  {genre}
+                  <FaRegCircleDot className="!w-3 !h-3" />
+                  <span>{genre.name}</span>
                 </Link>
-              </li>
+              </Button>
             ))}
           </ul>
         </div>

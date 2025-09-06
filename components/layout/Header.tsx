@@ -10,7 +10,7 @@ import HeaderRight from "./HeaderRight";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+    <header className="flex items-center justify-between lg:justify-end px-4 py-3">
       {/* Mobile menu button */}
       <Sheet>
         <SheetTrigger asChild>
@@ -26,7 +26,7 @@ export default function Header() {
         </SheetContent>
       </Sheet>
 
-      {/* Right side actions (if needed) */}
+      {/* Right side actions*/}
       <div className="flex-end">
         <HeaderRight />
       </div>

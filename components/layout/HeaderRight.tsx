@@ -1,12 +1,14 @@
 "use client";
 
 import { Search, Sun, Moon, LogOut } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch"; // shadcn switch
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 
 export default function HeaderRight() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  const isDark = theme === "dark";
 
   return (
     <div className="flex items-center gap-4">
@@ -22,8 +24,8 @@ export default function HeaderRight() {
       <div className="flex items-center gap-2">
         <Sun className="h-4 w-4 text-muted-foreground" />
         <Switch
-          checked={darkMode}
-          onCheckedChange={setDarkMode}
+          checked={isDark}
+          onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
           className="data-[state=checked]:bg-primary"
         />
         <Moon className="h-4 w-4 text-muted-foreground" />
