@@ -9,17 +9,17 @@ import type { Genre } from "@/types/type";
 const discoverLinks = [
   {
     name: "Popular",
-    href: "/discover/popular",
+    query: { category: "Popular", page: 1 },
     icon: <Heart className="w-4 h-4" />,
   },
   {
     name: "Top Rated",
-    href: "/discover/top-rated",
+    query: { category: "Top Rated", page: 1 },
     icon: <Star className="w-4 h-4" />,
   },
   {
     name: "Upcoming",
-    href: "/discover/upcoming",
+    query: { category: "Upcoming", page: 1 },
     icon: <Calendar className="w-4 h-4" />,
   },
 ];
@@ -31,9 +31,15 @@ export default async function Sidebar() {
     <aside className="w-64 pb-12 h-screen flex flex-col bg-muted">
       {/* Logo */}
       <div className="flex items-center justify-center h-20">
-        <div className="flex items-center gap-2">
+        <Link
+          href={{
+            pathname: "/",
+            query: { category: "Popular", page: 1 },
+          }}
+          className="flex items-center gap-2"
+        >
           <Logo />
-        </div>
+        </Link>
       </div>
 
       {/* Discover Section */}
@@ -50,7 +56,10 @@ export default async function Sidebar() {
                 key={item.name}
               >
                 <Link
-                  href={item.href}
+                  href={{
+                    pathname: "/",
+                    query: item.query,
+                  }}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
                 >
                   {item.icon}

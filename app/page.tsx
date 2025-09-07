@@ -1,6 +1,14 @@
+"use client";
 import MovieCard from "@/components/layout/MovieCard";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/?category=Popular&page=1");
+  }, [router]);
   return (
     <div>
       <MovieCard

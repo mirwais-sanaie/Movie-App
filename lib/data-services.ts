@@ -11,6 +11,18 @@ export async function getGenres() {
   }
 }
 
+export async function getMoviesPage(discover: string, page: string) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${discover}?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&language=en-US&page=${page}`
+    );
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 /*
 🔹 Popular Movies
 https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY&language=en-US&page=1
