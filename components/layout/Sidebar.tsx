@@ -14,7 +14,7 @@ const discoverLinks = [
   },
   {
     name: "Top Rated",
-    query: { category: "Top Rated", page: 1 },
+    query: { category: "top_rated", page: 1 },
     icon: <Star className="w-4 h-4" />,
   },
   {
@@ -26,9 +26,9 @@ const discoverLinks = [
 
 export default async function Sidebar() {
   const { genres } = await getGenres();
-  console.log(genres);
+
   return (
-    <aside className="w-64 pb-12 h-screen flex flex-col bg-muted">
+    <aside className="relative w-64 h-screen flex flex-col pb-12">
       {/* Logo */}
       <div className="flex items-center justify-center h-20">
         <Link
@@ -42,8 +42,9 @@ export default async function Sidebar() {
         </Link>
       </div>
 
-      {/* Discover Section */}
-      <nav className="flex-1 overflow-y-auto px-4 py-6 text-sidebar-primary">
+      {/* Discover & Genres */}
+      <nav className="flex-1 px-4 py-6 text-sidebar-primary">
+        {/* Discover */}
         <div>
           <h3 className="text-sm font-semibold mb-2 text-foreground">
             Discover
@@ -70,7 +71,7 @@ export default async function Sidebar() {
           </ul>
         </div>
 
-        {/* Genres Section */}
+        {/* Genres */}
         <div className="mt-6">
           <h3 className="text-sm font-semibold mb-2 text-foreground">Genres</h3>
           <ul className="space-y-2 flex flex-col text-start">
@@ -81,7 +82,10 @@ export default async function Sidebar() {
                 key={genre.id}
               >
                 <Link
-                  href={`/genre`}
+                  href={{
+                    pathname: "/genre",
+                    query: { id: genre.id, name: genre.name, page: 1 },
+                  }}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors"
                 >
                   <FaRegCircleDot className="!w-3 !h-3" />
@@ -92,6 +96,9 @@ export default async function Sidebar() {
           </ul>
         </div>
       </nav>
+
+      {/* Thin right “border” */}
+      <div className="absolute top-0 right-0 h-full w-[0.1px] bg-gray-700" />
     </aside>
   );
 }

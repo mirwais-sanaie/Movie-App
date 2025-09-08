@@ -31,7 +31,7 @@ export default function RootLayout({
             </header>
 
             {/* Sidebar only on large screens */}
-            <aside className="hidden lg:block border-r border-border bg-sidebar">
+            <aside className="hidden lg:block">
               <Sidebar />
             </aside>
 

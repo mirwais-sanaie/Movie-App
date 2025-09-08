@@ -1,21 +1,36 @@
 "use client";
-import MovieCard from "@/components/layout/MovieCard";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import MovieList from "@/components/layout/MovieList";
+import { getMoviesPage } from "@/lib/data-services";
+import { Movie } from "@/types/type";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+
+  const discover = (
+    searchParams.get("category") || "Popular"
+  ).toLocaleLowerCase();
+  const page = searchParams.get("page") || "1";
 
   useEffect(() => {
-    router.replace("/?category=Popular&page=1");
-  }, [router]);
-  return (
-    <div>
-      <MovieCard
-        poster="/war-of-the-worlds.png" // place your image in /public folder
-        title="War of the Worlds"
-        rating={2} // 2 out of 5 stars
-      />
-    </div>
-  );
+    if (!searchParams.get("category") || !searchParams.get("page")) {
+      router.replace("/?category=Popular&page=1");
+    }
+  }, [router, searchParams]);
+
+  useEffect(() => {
+    async function getMovies() {
+      const result = await getMoviesPage(discover, page);
+      console.log(result.results);
+      setMovies(result.results);
+    }
+    getMovies();
+  }, [discover, page]);
+
+  console.log(movies);
+
+  return <MovieList discover={discover} movies={movies} />;
 }
