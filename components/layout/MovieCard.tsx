@@ -19,7 +19,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
   const hasHalfStar = stars - fullStars >= 0.5;
 
   return (
-    <Card className="w-full rounded-lg bg-muted border-none shadow-md overflow-hidden hover:scale-[1.03] transition-transform duration-200">
+    <Card className="w-full  hover:scale-[1.03] transition-transform rounded-none bg-muted border-none shadow-none overflow-hidden hover:bg-input hover:scale-103 duration-100 p-0">
       {/* Poster */}
       <div className="relative w-full aspect-[2/3]">
         <Image
@@ -34,7 +34,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
       </div>
 
       {/* Content */}
-      <CardContent className="px-3 py-2 text-center border-none">
+      <CardContent className="px-3 py-2 pb-7 text-center border-none">
         <h2 className="text-sm font-medium line-clamp-1">{title}</h2>
 
         {/* Rating */}
