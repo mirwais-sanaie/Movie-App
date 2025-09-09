@@ -81,16 +81,17 @@ function Genre() {
     <div className="flex flex-col">
       <h1 className="flex flex-col uppercase">
         <span className="text-3xl">{genreName}</span>
-        <span className="text-sm text-secondary-foreground">movies</span>
+        <span className="text-sm text-secondary-foreground mb-5">movies</span>
       </h1>
 
       <div
         className="
-          lg:m-10
+           lg:m-10
           grid
-          gap-10               /* spacing between cards */
+          gap-3  
+          lg:gap-9           
           sm:gap-6
-          grid-cols-2          /* small screens */
+          grid-cols-2         
           sm:grid-cols-3
           md:grid-cols-4
           2xl:grid-cols-7

@@ -19,9 +19,9 @@ function MovieList({ movies, discover }: MovieListProps) {
         lg:m-10
           grid
           gap-3  
-          lg:gap-9             /* spacing between cards */
+          lg:gap-9         
           sm:gap-6
-          grid-cols-2          /* small screens */
+          grid-cols-2        
           sm:grid-cols-3
           md:grid-cols-4
           2xl:grid-cols-7

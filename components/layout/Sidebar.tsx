@@ -40,7 +40,7 @@ export default function Sidebar({
   const discoverName = searchParams?.get("category");
 
   return (
-    <aside className="relative w-64 h-screen flex flex-col pb-12">
+    <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto">
       {/* Logo */}
       <div className="flex items-center justify-center h-20">
         <Link
