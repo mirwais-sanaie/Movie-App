@@ -16,11 +16,14 @@ function MovieList({ movies, discover }: MovieListProps) {
 
       <div
         className="
-          m-3
-          mx-auto
-          lg:m-10 
-          grid gap-14 
-          [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]
+        lg:m-10
+          grid
+          gap-10               /* spacing between cards */
+          sm:gap-6
+          grid-cols-2          /* small screens */
+          sm:grid-cols-3
+          md:grid-cols-4
+          2xl:grid-cols-7
         "
       >
         {movies?.map((movie: Movie) => (
