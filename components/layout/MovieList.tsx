@@ -11,14 +11,15 @@ function MovieList({ movies, discover }: MovieListProps) {
     <div className="flex flex-col">
       <h1 className="flex flex-col uppercase">
         <span className="text-3xl">{discover}</span>
-        <span className="text-sm text-secondary-foreground">movies</span>
+        <span className="text-sm text-secondary-foreground mb-5">movies</span>
       </h1>
 
       <div
         className="
         lg:m-10
           grid
-          gap-10               /* spacing between cards */
+          gap-3  
+          lg:gap-9             /* spacing between cards */
           sm:gap-6
           grid-cols-2          /* small screens */
           sm:grid-cols-3

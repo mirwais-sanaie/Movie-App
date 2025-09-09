@@ -1,32 +1,38 @@
+"use client";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Movie } from "@/types/type";
+import { useState } from "react";
+import SmallSpinner from "./SmallSpinner";
 
 export default function MovieCard({ movie }: { movie: Movie }) {
   const { poster_path, title, backdrop_path, vote_average } = movie;
+  const [loading, setLoading] = useState(true);
 
   const posterUrl = poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
-    : "/placeholder.png";
+    : "/ImageNotFound.png";
 
   const backdropUrl = backdrop_path
     ? `https://image.tmdb.org/t/p/w780${backdrop_path}`
-    : "/placeholder-backdrop.png";
+    : "/ImageNotFound.png";
 
   const stars = (vote_average / 10) * 5;
   const fullStars = Math.floor(stars);
   const hasHalfStar = stars - fullStars >= 0.5;
 
   return (
-    <Card className="w-full  hover:scale-[1.03] transition-transform rounded-none bg-muted border-none shadow-none overflow-hidden hover:bg-input hover:scale-103 duration-100 p-0">
+    <Card className="w-full hover:scale-[1.03] transition-transform rounded-none bg-muted border-none shadow-none overflow-hidden hover:bg-input duration-100 p-0">
       {/* Poster */}
       <div className="relative w-full aspect-[2/3]">
+        {loading && <SmallSpinner />}
         <Image
           src={posterUrl || backdropUrl}
           alt={title}
           fill
           className="object-cover"
+          onLoadingComplete={() => setLoading(false)}
         />
 
         {/* Bottom gradient */}

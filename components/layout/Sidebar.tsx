@@ -1,10 +1,13 @@
+"use client";
 import Link from "next/link";
 import { Heart, Star, Calendar } from "lucide-react";
-import { getGenres } from "@/lib/data-services";
 import Logo from "./Logo";
 import { Button } from "../ui/button";
 import { FaRegCircleDot } from "react-icons/fa6";
 import type { Genre } from "@/types/type";
+import { useGenres } from "@/hooks/useGenres";
+import SmallSpinner from "./SmallSpinner";
+import { useSearchParams } from "next/navigation";
 
 const discoverLinks = [
   {
@@ -24,8 +27,17 @@ const discoverLinks = [
   },
 ];
 
-export default async function Sidebar() {
-  const { genres } = await getGenres();
+export default function Sidebar({
+  closeSidebar,
+}: {
+  closeSidebar?: () => void;
+}) {
+  const searchParams = useSearchParams();
+  const { data, isLoading, error } = useGenres();
+  const genres = data?.genres ?? [];
+
+  const genreName = searchParams?.get("name");
+  const discoverName = searchParams?.get("category");
 
   return (
     <aside className="relative w-64 h-screen flex flex-col pb-12">
@@ -37,6 +49,7 @@ export default async function Sidebar() {
             query: { category: "Popular", page: 1 },
           }}
           className="flex items-center gap-2"
+          onClick={closeSidebar}
         >
           <Logo />
         </Link>
@@ -53,7 +66,11 @@ export default async function Sidebar() {
             {discoverLinks.map((item) => (
               <Button
                 variant={"link"}
-                className="text-sidebar-primary list-none"
+                className={`list-none ${
+                  discoverName === item.query.category
+                    ? "text-red-600"
+                    : "text-sidebar-primary"
+                }`}
                 key={item.name}
               >
                 <Link
@@ -61,7 +78,8 @@ export default async function Sidebar() {
                     pathname: "/",
                     query: item.query,
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors`}
+                  onClick={closeSidebar}
                 >
                   {item.icon}
                   {item.name}
@@ -74,26 +92,36 @@ export default async function Sidebar() {
         {/* Genres */}
         <div className="mt-6">
           <h3 className="text-sm font-semibold mb-2 text-foreground">Genres</h3>
-          <ul className="space-y-2 flex flex-col text-start">
-            {genres?.map((genre: Genre) => (
-              <Button
-                variant={"link"}
-                className="text-sidebar-primary flex justify-start"
-                key={genre.id}
-              >
-                <Link
-                  href={{
-                    pathname: "/genre",
-                    query: { id: genre.id, name: genre.name, page: 1 },
-                  }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors"
+          {isLoading ? (
+            <SmallSpinner />
+          ) : (
+            <ul className="space-y-2 flex flex-col text-start">
+              {genres?.map((genre: Genre) => (
+                <Button
+                  variant={"link"}
+                  className={`${
+                    genreName === genre.name
+                      ? "text-red-600"
+                      : "text-sidebar-primary"
+                  } flex justify-start`}
+                  key={genre.id}
                 >
-                  <FaRegCircleDot className="!w-3 !h-3" />
-                  <span>{genre.name}</span>
-                </Link>
-              </Button>
-            ))}
-          </ul>
+                  <Link
+                    href={{
+                      pathname: "/genre",
+                      query: { id: genre.id, name: genre.name, page: 1 },
+                    }}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors`}
+                    onClick={closeSidebar}
+                  >
+                    <FaRegCircleDot className="!w-3 !h-3" />
+                    <span>{genre.name}</span>
+                  </Link>
+                </Button>
+              ))}
+            </ul>
+          )}
+          {error && "Error while fetching genres"}
         </div>
       </nav>
 
