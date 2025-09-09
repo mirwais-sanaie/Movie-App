@@ -20,19 +20,21 @@ export async function getMoviesPage(discover: string, page: string) {
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 }
 
 export async function getMoviesByGenres(page: string, genreId: string) {
-  console.log(genreId);
   try {
     const res = await fetch(
       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&with_genres=${genreId}&page=${page}`
     );
     const data = await res.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 }
 

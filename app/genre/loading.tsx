@@ -1,5 +1,7 @@
+import Spinner from "@/components/layout/Spinner";
+
 function loading() {
-  return <span className="loader"></span>;
+  return <Spinner />;
 }
 
 export default loading;
