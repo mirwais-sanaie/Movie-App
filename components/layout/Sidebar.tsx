@@ -40,7 +40,7 @@ export default function Sidebar({
   const discoverName = searchParams?.get("category");
 
   return (
-    <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto">
+    <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto lg:overflow-visible">
       {/* Logo */}
       <div className="flex items-center justify-center h-20">
         <Link
@@ -68,7 +68,7 @@ export default function Sidebar({
                 variant={"link"}
                 className={`list-none ${
                   discoverName === item.query.category
-                    ? "text-red-600"
+                    ? "text-destructive"
                     : "text-sidebar-primary"
                 }`}
                 key={item.name}
@@ -101,7 +101,7 @@ export default function Sidebar({
                   variant={"link"}
                   className={`${
                     genreName === genre.name
-                      ? "text-red-600"
+                      ? "text-destructive"
                       : "text-sidebar-primary"
                   } flex justify-start`}
                   key={genre.id}
