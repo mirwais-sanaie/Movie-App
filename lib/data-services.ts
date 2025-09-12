@@ -40,10 +40,12 @@ export async function getMoviesByGenres(page: string, genreId: string) {
 export async function getMovieDetail(movieId: string) {
   try {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&language=en-US`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&append_to_response=credits,videos
+`
     );
 
     const data = await res.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

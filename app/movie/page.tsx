@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Star, ArrowLeft, Video } from "lucide-react";
+import { Star, ArrowLeft, Video, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Genre } from "@/types/type";
+import { Genre, MovieCast } from "@/types/type";
 import Link from "next/link";
 import { FaImdb, FaRegCircleDot } from "react-icons/fa6";
 import { useSearchParams } from "next/navigation";
@@ -11,6 +11,9 @@ import { useGetMovieDetail } from "@/hooks/useMovies";
 import Spinner from "@/components/layout/Spinner";
 import SmallSpinner from "@/components/layout/SmallSpinner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import TrailerModal from "@/components/layout/TrailerModal";
+import type { MovieVideo } from "@/types/type";
 
 export default function MovieDetail() {
   // const movie = {
@@ -38,7 +41,9 @@ export default function MovieDetail() {
   // };
 
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const movieId = searchParams.get("id");
   const page = searchParams.get("page");
@@ -64,6 +69,35 @@ export default function MovieDetail() {
   const fullStars = Math.floor(stars);
   const hasHalfStar = stars - fullStars >= 0.5;
 
+  console.log(movie.videos);
+
+  const trailer = movie.videos?.results?.find(
+    (v: MovieVideo) => v.type === "Trailer" && v.site === "YouTube"
+  );
+  const trailerKey = trailer?.key;
+
+  const NAV_STACK_KEY = "app_nav_stack_v1";
+  const handleBack = () => {
+    try {
+      const raw = sessionStorage.getItem(NAV_STACK_KEY);
+      const stack: string[] = raw ? JSON.parse(raw) : [];
+
+      if (stack.length >= 2) {
+        // previous page is second-last entry
+        const prev = stack[stack.length - 2];
+        // remove the last entry (current page)
+        stack.pop();
+        // update storage
+        sessionStorage.setItem(NAV_STACK_KEY, JSON.stringify(stack));
+        router.push(prev);
+      } else {
+        // nothing in stack -> fallback home
+        router.push("/");
+      }
+    } catch (e) {
+      router.push("/");
+    }
+  };
   return (
     <div className="min-h-screen text-foreground md:p-10 lg:mx-10">
       <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
@@ -154,51 +188,90 @@ export default function MovieDetail() {
 
           {/* Synopsis */}
           <div>
-            <h2 className="text-lg font-semibold mb-2">Synopsis</h2>
+            <h1 className="uppercase text-base mb-2">The Synopsis</h1>
             <p className="text-muted-foreground leading-relaxed text-sm">
               {movie.overview || "No details available."}
             </p>
           </div>
 
           {/* Cast */}
-          {/* <div>
-            <h2 className="text-lg font-semibold mb-3">Cast</h2>
+          <div>
+            <h1 className="uppercase text-base mb-2">The Cast</h1>
             <div className="flex gap-3">
-              {movie.cast.map((actor) => (
-                <Image
+              {movie.credits.cast.slice(0, 5).map((actor: MovieCast) => (
+                <div
                   key={actor.id}
-                  src={actor.img}
-                  alt="Actor"
-                  width={60}
-                  height={60}
-                  className="rounded-full border border-border object-cover"
-                />
+                  className="w-[60px] h-[60px] rounded-full overflow-hidden border border-border"
+                >
+                  <Image
+                    src={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                        : "/ImageNotFound.png"
+                    }
+                    alt={actor.name}
+                    width={60}
+                    height={60}
+                    className="object-cover"
+                  />
+                </div>
               ))}
             </div>
-          </div> */}
+          </div>
 
           {/* Actions */}
           <div className="flex gap-4 justify-between">
             <div className="space-x-2">
-              <Button
-                size={"lg"}
-                variant={"outline"}
-                className="cursor-pointer py-6"
+              {movie.homepage && (
+                <Link
+                  href={movie.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    size={"lg"}
+                    variant={"outline"}
+                    className="cursor-pointer py-6"
+                  >
+                    Website
+                    <Link2 className="w-4 h-4" />
+                  </Button>
+                </Link>
+              )}
+              <Link
+                href={`https://www.imdb.com/title/${movie.imdb_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                IMDB
-                <FaImdb className="w-4 h-4" />
-              </Button>
+                <Button
+                  size={"lg"}
+                  variant={"outline"}
+                  className="cursor-pointer py-6"
+                >
+                  IMDB
+                  <FaImdb className="w-4 h-4" />
+                </Button>
+              </Link>
+
               <Button
                 size={"lg"}
                 variant={"outline"}
                 className="cursor-pointer py-6"
+                onClick={() => setIsModalOpen(true)}
               >
                 Trailer
                 <Video className="w-4 h-4" />
               </Button>
+
+              <TrailerModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                trailerKey={trailerKey}
+              />
             </div>
             <Button
               size={"lg"}
+              onClick={handleBack}
               className="bg-primary py-6 flex items-center cursor-pointer gap-2"
             >
               <ArrowLeft className="w-4 h-4" /> Back
