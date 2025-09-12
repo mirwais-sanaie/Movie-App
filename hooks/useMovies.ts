@@ -1,4 +1,8 @@
-import { getMoviesByGenres, getMoviesPage } from "@/lib/data-services";
+import {
+  getMovieDetail,
+  getMoviesByGenres,
+  getMoviesPage,
+} from "@/lib/data-services";
 import { Movie } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
 
@@ -17,4 +21,13 @@ export function useGetMoviesByDiscover(discover: string, page: string) {
     queryKey: ["movies", "discover", discover, page],
     queryFn: () => getMoviesPage(discover, page),
   });
+}
+
+export function useGetMovieDetail(movieId: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["movie", movieId],
+    queryFn: () => getMovieDetail(movieId),
+  });
+
+  return { data, isLoading, error };
 }

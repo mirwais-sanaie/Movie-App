@@ -5,11 +5,19 @@ import { Star } from "lucide-react";
 import { Movie } from "@/types/type";
 import { useState } from "react";
 import SmallSpinner from "./SmallSpinner";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function MovieCard({ movie }: { movie: Movie }) {
-  const { poster_path, title, backdrop_path, vote_average } = movie;
+  const {
+    poster_path,
+    title,
+    backdrop_path,
+    vote_average,
+    id: movieId,
+  } = movie;
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   const posterUrl = poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
@@ -23,8 +31,13 @@ export default function MovieCard({ movie }: { movie: Movie }) {
   const fullStars = Math.floor(stars);
   const hasHalfStar = stars - fullStars >= 0.5;
 
+  function handleMovieDetail() {
+    console.log(movieId);
+    router.replace(`/movie?id=${movieId}&page=1`);
+  }
+
   return (
-    <Link href={"/movie"} className="cursor-pointer">
+    <div onClick={handleMovieDetail} className="cursor-pointer">
       <Card className="w-full hover:scale-[1.03] transition-transform rounded-none bg-muted border-none shadow-none overflow-hidden hover:bg-input duration-100 p-0">
         {/* Poster */}
         <div className="relative w-full aspect-[2/3]">
@@ -76,6 +89,6 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   );
 }
