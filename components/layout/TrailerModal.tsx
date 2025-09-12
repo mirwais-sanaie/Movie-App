@@ -5,15 +5,16 @@ interface TrailerModalProps {
 }
 
 function TrailerModal({ isOpen, onClose, trailerKey }: TrailerModalProps) {
-  if (!isOpen) return null;
-
+  if (!isOpen) {
+    return null;
+  }
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={onClose}
     >
       <div
-        className="relative bg-black rounded-lg overflow-hidden w-[90%] max-w-3xl"
+        className="bg-black rounded-lg overflow-hidden w-[90%] max-w-3xl"
         onClick={(e) => e.stopPropagation()}
       >
         <iframe
@@ -25,10 +26,8 @@ function TrailerModal({ isOpen, onClose, trailerKey }: TrailerModalProps) {
           allow="autoplay; encrypted-media"
           allowFullScreen
         ></iframe>
-
-        {/* Close button */}
         <button
-          className="absolute top-2 right-2 text-red-600 text-2xl font-bold z-10"
+          className="absolute top-2 right-2 text-white text-xl font-bold"
           onClick={onClose}
         >
           ✕
