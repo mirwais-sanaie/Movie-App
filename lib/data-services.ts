@@ -75,3 +75,16 @@ export async function getRecommendedMovies(movieId: string, page: string) {
     console.log(error);
   }
 }
+
+export async function getPersonMovies(personId: string) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${process.env.NEXT_PUBLIC_API_TMDB}`
+    );
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
