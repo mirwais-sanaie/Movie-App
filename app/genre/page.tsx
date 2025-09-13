@@ -102,7 +102,11 @@ function Genre() {
         ))}
       </div>
 
-      <PageToggler page={page} handlePageChange={handlePageChange} />
+      <PageToggler
+        totalPages={0}
+        page={page}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 }

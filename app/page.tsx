@@ -41,7 +41,11 @@ export default function Home() {
     <div>
       <MovieList discover={discover} movies={data?.results || []} />
 
-      <PageToggler page={page} handlePageChange={handlePageChange} />
+      <PageToggler
+        totalPages={0}
+        page={page}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 }

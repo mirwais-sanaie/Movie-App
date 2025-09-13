@@ -113,7 +113,9 @@ export default function MovieDetail() {
           <div className="flex flex-col space-y-6">
             {/* Title & Tagline */}
             <div>
-              <h1 className="text-4xl font-bold mb-3">{movie.title}</h1>
+              <h1 className="text-2xl md:text-4xl font-bold mb-3">
+                {movie.title}
+              </h1>
               <p className="text-muted-foreground mt-1 font-bold uppercase text-sm">
                 {movie.tagline}
               </p>
@@ -213,7 +215,7 @@ export default function MovieDetail() {
 
             {/* Actions */}
             <div className="flex gap-4 justify-between">
-              <div className="space-x-2">
+              <div className="space-x-1 lg:space-x-4">
                 {movie.homepage && (
                   <Link
                     href={movie.homepage}
@@ -221,9 +223,8 @@ export default function MovieDetail() {
                     rel="noopener noreferrer"
                   >
                     <Button
-                      size={"lg"}
                       variant={"outline"}
-                      className="cursor-pointer py-6"
+                      className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto"
                     >
                       Website
                       <Link2 className="w-4 h-4" />
@@ -238,7 +239,7 @@ export default function MovieDetail() {
                   <Button
                     size={"lg"}
                     variant={"outline"}
-                    className="cursor-pointer py-6"
+                    className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto"
                   >
                     IMDB
                     <FaImdb className="w-4 h-4" />
@@ -248,7 +249,7 @@ export default function MovieDetail() {
                 <Button
                   size={"lg"}
                   variant={"outline"}
-                  className="cursor-pointer py-6"
+                  className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
                   onClick={() => setIsModalOpen(true)}
                 >
                   Trailer
@@ -262,9 +263,8 @@ export default function MovieDetail() {
                 />
               </div>
               <Button
-                size={"lg"}
                 onClick={handleBack}
-                className="bg-primary py-6 flex items-center cursor-pointer gap-2"
+                className="bg-primary lg:py-6 w-20 h-10 lg:w-auto flex items-center cursor-pointer gap-2"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </Button>
@@ -272,9 +272,14 @@ export default function MovieDetail() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col  mt-11 mb-5 lg:mt-0 lg:mb-0">
         <h1 className="flex flex-col uppercase">
-          <span className="text-3xl">Recommended</span>
+          <span
+            className="text-3xl
+          "
+          >
+            Recommended
+          </span>
           <span className="text-sm text-secondary-foreground mb-2">movies</span>
         </h1>
 
@@ -302,7 +307,11 @@ export default function MovieDetail() {
           )}
         </div>
 
-        <PageToggler page={Number(page)} handlePageChange={handlePageChange} />
+        <PageToggler
+          totalPages={0}
+          page={Number(page)}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </>
   );
