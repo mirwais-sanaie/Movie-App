@@ -6,7 +6,7 @@ export interface MovieListProps {
   discover: string;
 }
 
-function MovieList({ movies, discover }: MovieListProps) {
+function MovieList({ movies, discover = "None" }: MovieListProps) {
   return (
     <div className="flex flex-col">
       <h1 className="flex flex-col uppercase">

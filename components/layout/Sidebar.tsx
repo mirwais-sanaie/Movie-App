@@ -42,7 +42,7 @@ export default function Sidebar({
   return (
     <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto lg:overflow-visible">
       {/* Logo */}
-      <div className="flex items-center justify-center h-20">
+      <div className=" items-center justify-center h-20 hidden md:flex">
         <Link
           href={{
             pathname: "/",
