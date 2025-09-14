@@ -88,3 +88,16 @@ export async function getPersonMovies(personId: string) {
     console.log(error);
   }
 }
+
+export async function searchMovies(query: string, page: string) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&query=${query}&page=${page}`
+    );
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

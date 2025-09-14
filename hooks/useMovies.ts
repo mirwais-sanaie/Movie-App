@@ -3,6 +3,7 @@ import {
   getMoviesByGenres,
   getMoviesPage,
   getRecommendedMovies,
+  searchMovies,
 } from "@/lib/data-services";
 import { Movie } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
@@ -46,4 +47,13 @@ export function useRecommendedMovies(movieId: string, page: string) {
   });
 
   return { recommendedMovies, isLoading, error };
+}
+
+export function useMovies(query: string, page: string) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["search", query, page],
+    queryFn: () => searchMovies(query, page),
+  });
+
+  return { data, isLoading, error };
 }
