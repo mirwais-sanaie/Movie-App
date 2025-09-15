@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Sun, Moon, LogOut } from "lucide-react";
+import { Search, Sun, Moon, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function HeaderRight() {
   const { theme, setTheme } = useTheme();
@@ -97,7 +98,9 @@ export default function HeaderRight() {
         variant="outline"
         className="border-primary text-primary hover:bg-primary/10 rounded-lg"
       >
-        <LogOut className="h-5 w-5" />
+        <Link href="/login">
+          <LogIn className="h-5 w-5" />
+        </Link>
       </Button>
     </div>
   );

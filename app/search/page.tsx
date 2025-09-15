@@ -31,7 +31,7 @@ function SearchedMovie() {
           className="text-3xl
           "
         >
-          Recommended
+          {searchTerm}
         </span>
         <span className="text-sm text-secondary-foreground mb-2">movies</span>
       </h1>
