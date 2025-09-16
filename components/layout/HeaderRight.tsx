@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Sun, Moon, LogOut, LogIn } from "lucide-react";
+import { Search, Sun, Moon, LogIn, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
@@ -43,7 +43,6 @@ export default function HeaderRight() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     router.push(`/search?searchTerm=${query}&page=1`);
-    setQuery("");
   }
 
   return (
@@ -80,6 +79,10 @@ export default function HeaderRight() {
           </Button>
         )}
       </form>
+
+      <div>
+        <Bookmark />
+      </div>
 
       {/* Theme Toggle */}
       <div className="flex items-center gap-2">

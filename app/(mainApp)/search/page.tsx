@@ -27,12 +27,7 @@ function SearchedMovie() {
   return (
     <div className="flex flex-col  mt-11 mb-5 lg:mt-0 lg:mb-0">
       <h1 className="flex flex-col uppercase">
-        <span
-          className="text-3xl
-          "
-        >
-          {searchTerm}
-        </span>
+        <span className="text-3xl">{searchTerm}</span>
         <span className="text-sm text-secondary-foreground mb-2">movies</span>
       </h1>
 
