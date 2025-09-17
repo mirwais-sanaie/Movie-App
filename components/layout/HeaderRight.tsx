@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function HeaderRight() {
   const { theme, setTheme } = useTheme();
@@ -15,6 +17,9 @@ export default function HeaderRight() {
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  console.log(session);
 
   const isDark = theme === "dark";
 
@@ -80,8 +85,10 @@ export default function HeaderRight() {
         )}
       </form>
 
-      <div>
-        <Bookmark />
+      <div title="Saved Movies">
+        <Link href={"/savedMovies"}>
+          <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
+        </Link>
       </div>
 
       {/* Theme Toggle */}
@@ -96,15 +103,28 @@ export default function HeaderRight() {
       </div>
 
       {/* Logout */}
-      <Button
-        size="icon"
-        variant="outline"
-        className="border-primary text-primary hover:bg-primary/10 rounded-lg"
-      >
-        <Link href="/login">
-          <LogIn className="h-5 w-5" />
-        </Link>
-      </Button>
+      {session?.user ? (
+        <div className="flex items-center space-x-2">
+          <Image
+            width={30}
+            height={30}
+            src={session?.user.image || ""}
+            alt={session?.user.name || "User Avatar"}
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="text-sm mr-2">{session.user.name}</span>
+        </div>
+      ) : (
+        <Button
+          size="icon"
+          variant="outline"
+          className="border-primary text-primary hover:bg-primary/10 rounded-lg"
+        >
+          <Link href="/login">
+            <LogIn className="h-5 w-5" />
+          </Link>
+        </Button>
+      )}
     </div>
   );
 }

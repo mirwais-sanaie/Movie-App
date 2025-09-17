@@ -5,7 +5,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { ProviderTheme } from "@/components/layout/ProviderTheme";
 import ProviderQuery from "@/components/layout/ProviderQuery";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SessionProvider } from "next-auth/react";
 
 const DmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -25,25 +25,27 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${DmSans.variable} antialiased min-h-screen bg-muted`}>
-        <ProviderQuery>
-          <ProviderTheme>
-            <div className="grid grid-rows-[auto_1fr] lg:grid-cols-[250px_1fr] min-h-screen">
-              {/* Header always on top */}
-              <header className="lg:col-span-2">
-                <Header />
-              </header>
+        <SessionProvider>
+          <ProviderQuery>
+            <ProviderTheme>
+              <div className="grid grid-rows-[auto_1fr] lg:grid-cols-[250px_1fr] min-h-screen">
+                {/* Header always on top */}
+                <header className="lg:col-span-2">
+                  <Header />
+                </header>
 
-              {/* Sidebar only on large screens */}
-              <aside className="hidden lg:block">
-                <Sidebar />
-              </aside>
+                {/* Sidebar only on large screens */}
+                <aside className="hidden lg:block">
+                  <Sidebar />
+                </aside>
 
-              {/* Main content */}
-              <main className="p-6 ">{children}</main>
-            </div>
-          </ProviderTheme>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        </ProviderQuery>
+                {/* Main content */}
+                <main className="p-6 ">{children}</main>
+              </div>
+            </ProviderTheme>
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          </ProviderQuery>
+        </SessionProvider>
       </body>
     </html>
   );
