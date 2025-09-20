@@ -1,3 +1,6 @@
+import { ID, Query } from "appwrite";
+import { databases } from "@/configs/appwrite";
+
 export async function getGenres() {
   try {
     const res = await fetch(
@@ -100,4 +103,53 @@ export async function searchMovies(query: string, page: string) {
   } catch (error) {
     console.log(error);
   }
+}
+
+// lib/data-services.ts
+
+export async function addMovieToFavorites({
+  movieId,
+  userEmail,
+}: {
+  movieId: string;
+  userEmail: string;
+}) {
+  console.log(movieId, userEmail);
+  return await databases.createDocument(
+    process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+    process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+    ID.unique(),
+    {
+      movieId,
+      userEmail,
+    }
+  );
+}
+
+export async function getFavoriteMovies(userEmail: string) {}
+
+export async function getFavoriteMovieIdsByEmail(userEmail: string) {
+  try {
+    const res = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+      [Query.equal("userEmail", userEmail)]
+    );
+
+    // return only the movieId values
+    return res.documents.map((doc) => doc.movieId);
+  } catch (error) {
+    console.error("Error fetching favorite movies:", error);
+    throw error;
+  }
+}
+
+export async function getMoviesByIds(ids: number[]) {
+  return Promise.all(
+    ids.map((id) =>
+      fetch(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&language=en-US`
+      ).then((res) => res.json())
+    )
+  );
 }

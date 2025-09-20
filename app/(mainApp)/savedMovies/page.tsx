@@ -1,10 +1,17 @@
-import PageToggler from "@/components/layout/PageToggler";
+import MovieCard from "@/components/layout/MovieCard";
+import { auth } from "@/lib/auth";
+import {
+  getFavoriteMovieIdsByEmail,
+  getMoviesByIds,
+} from "@/lib/data-services";
+import { Movie } from "@/types/type";
 
-function SavedMovies() {
-  //   const router = useRouter();
-  const handlePageChange = (newPage: number) => {
-    // router.push(`/movie/?id=${movieId}&page=${newPage}`);
-  };
+async function SavedMovies() {
+  const session = await auth();
+  const movieIds = await getFavoriteMovieIdsByEmail(
+    session?.user?.email || "guest"
+  );
+  const movies = await getMoviesByIds(movieIds || []);
   return (
     <div className="flex flex-col  mt-11 mb-5 lg:mt-0 lg:mb-0">
       <h1 className="flex flex-col uppercase">
@@ -32,13 +39,9 @@ function SavedMovies() {
              "
       >
         {/* {recError && <div>Error loading recommended movies.</div>} */}
-        {/* {recLoading ? (
-            <Spinner />
-          ) : (
-            recommendedMovies?.map((movie: Movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))
-          )} */}
+        {movies?.map((movie: Movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
       </div>
 
       {/* <PageToggler

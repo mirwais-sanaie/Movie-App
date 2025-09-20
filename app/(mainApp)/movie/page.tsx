@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Star, ArrowLeft, Video, Link2 } from "lucide-react";
+import { Star, ArrowLeft, Video, Link2, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Genre, MovieCast } from "@/types/type";
 import Link from "next/link";
-import { FaImdb, FaRegCircleDot } from "react-icons/fa6";
+import { FaHeart, FaImdb, FaRegCircleDot, FaSpinner } from "react-icons/fa6";
 import { useSearchParams } from "next/navigation";
 import { useGetMovieDetail, useRecommendedMovies } from "@/hooks/useMovies";
 import Spinner from "@/components/layout/Spinner";
@@ -16,6 +16,8 @@ import TrailerModal from "@/components/layout/TrailerModal";
 import type { Movie, MovieVideo } from "@/types/type";
 import MovieCard from "@/components/layout/MovieCard";
 import PageToggler from "@/components/layout/PageToggler";
+import useAddFavorites from "@/hooks/useAddFavorites";
+import { useSession } from "next-auth/react";
 
 export default function MovieDetail() {
   const searchParams = useSearchParams();
@@ -27,6 +29,9 @@ export default function MovieDetail() {
   const page = searchParams.get("page");
 
   const { data: movie, error, isLoading } = useGetMovieDetail(movieId || "");
+
+  const { addToFavorites, isPending, error: addMovieError } = useAddFavorites();
+  const { data: session, status } = useSession();
 
   const {
     recommendedMovies,
@@ -66,6 +71,13 @@ export default function MovieDetail() {
     router.push(`/movie/?id=${movieId}&page=${newPage}`);
   };
 
+  function handleAddToFavorites(movieId: string) {
+    addToFavorites({
+      movieId,
+      userEmail: session?.user?.email || "guest",
+    });
+  }
+
   const NAV_STACK_KEY = "app_nav_stack_v1";
   const handleBack = () => {
     try {
@@ -88,6 +100,7 @@ export default function MovieDetail() {
       router.push("/");
     }
   };
+
   return (
     <>
       <div className="min-h-screen text-foreground md:p-10 lg:mx-10">
@@ -215,7 +228,7 @@ export default function MovieDetail() {
 
             {/* Actions */}
             <div className="flex gap-4 justify-between">
-              <div className="space-x-1 lg:space-x-4">
+              <div className="space-x-1 lg:space-x-4 flex items-center ">
                 {movie.homepage && (
                   <Link
                     href={movie.homepage}
@@ -254,6 +267,22 @@ export default function MovieDetail() {
                 >
                   Trailer
                   <Video className="w-4 h-4" />
+                </Button>
+
+                <Button
+                  size={"lg"}
+                  title="Add to favorites"
+                  variant={"outline"}
+                  className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
+                  onClick={() => handleAddToFavorites(movie.id.toString())}
+                >
+                  {isPending ? (
+                    <FaSpinner />
+                  ) : (
+                    <Heart className="w-4 h-4" color="red" />
+                  )}
+
+                  {/* <FaHeart color="red" className="w-4 h-4" /> */}
                 </Button>
 
                 <TrailerModal
