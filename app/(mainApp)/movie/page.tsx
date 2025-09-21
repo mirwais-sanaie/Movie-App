@@ -16,7 +16,11 @@ import TrailerModal from "@/components/layout/TrailerModal";
 import type { Movie, MovieVideo } from "@/types/type";
 import MovieCard from "@/components/layout/MovieCard";
 import PageToggler from "@/components/layout/PageToggler";
-import useAddFavorites from "@/hooks/useAddFavorites";
+import {
+  useAddFavorite,
+  useFavorites,
+  useRemoveFavorite,
+} from "@/hooks/useFavorites";
 import { useSession } from "next-auth/react";
 
 export default function MovieDetail() {
@@ -30,8 +34,31 @@ export default function MovieDetail() {
 
   const { data: movie, error, isLoading } = useGetMovieDetail(movieId || "");
 
-  const { addToFavorites, isPending, error: addMovieError } = useAddFavorites();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
+  const userEmail = session?.user?.email || "guest";
+
+  const { data: favorites = [], isLoading: favLoading } =
+    useFavorites(userEmail);
+  const { mutate: addFavorite, isPending: isAdding } = useAddFavorite();
+  const { mutate: removeFavorite, isPending: removing } = useRemoveFavorite();
+
+  // check if this movie is already in favorites
+  const favoriteDoc = favorites.find(
+    (f) => f.movieId === movie?.id?.toString()
+  );
+  const isFavorite = !!favoriteDoc;
+
+  const handleToggleFavorite = (movieId: string) => {
+    if (!isFavorite) {
+      addFavorite({
+        movieId,
+        userEmail: session?.user?.email || "guest",
+      });
+    } else if (favoriteDoc) {
+      removeFavorite({ docId: favoriteDoc.$id, userEmail });
+    }
+  };
 
   const {
     recommendedMovies,
@@ -70,13 +97,6 @@ export default function MovieDetail() {
   const handlePageChange = (newPage: number) => {
     router.push(`/movie/?id=${movieId}&page=${newPage}`);
   };
-
-  function handleAddToFavorites(movieId: string) {
-    addToFavorites({
-      movieId,
-      userEmail: session?.user?.email || "guest",
-    });
-  }
 
   const NAV_STACK_KEY = "app_nav_stack_v1";
   const handleBack = () => {
@@ -270,19 +290,21 @@ export default function MovieDetail() {
                 </Button>
 
                 <Button
-                  size={"lg"}
-                  title="Add to favorites"
-                  variant={"outline"}
+                  size="lg"
+                  variant="outline"
+                  title={
+                    isFavorite ? "Remove from favorites" : "Add to favorites"
+                  }
                   className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
-                  onClick={() => handleAddToFavorites(movie.id.toString())}
+                  onClick={() => handleToggleFavorite(movie.id.toString())}
                 >
-                  {isPending ? (
-                    <FaSpinner />
+                  {isAdding || removing ? (
+                    <FaSpinner className="animate-spin" />
+                  ) : isFavorite ? (
+                    <FaHeart color="red" className="w-4 h-4" />
                   ) : (
-                    <Heart className="w-4 h-4" color="red" />
+                    <Heart className="w-4 h-4 text-red-600" />
                   )}
-
-                  {/* <FaHeart color="red" className="w-4 h-4" /> */}
                 </Button>
 
                 <TrailerModal

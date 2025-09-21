@@ -47,3 +47,9 @@ export type MovieVideo = {
   official: boolean;
   published_at: string;
 };
+
+export interface Favorite {
+  $id: string;
+  movieId: string;
+  userEmail: string;
+}

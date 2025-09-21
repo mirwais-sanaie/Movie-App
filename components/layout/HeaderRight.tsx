@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Sun, Moon, LogIn, Bookmark } from "lucide-react";
+import { Search, Sun, Moon, LogIn, Bookmark, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useFavorites } from "@/hooks/useFavorites";
+import { signOutAction } from "@/lib/actions";
 
 export default function HeaderRight() {
   const { theme, setTheme } = useTheme();
@@ -17,9 +19,12 @@ export default function HeaderRight() {
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
-  console.log(session);
+  const userEmail = session?.user?.email || "guest";
+
+  const { data: favorites = [], isLoading: favLoading } =
+    useFavorites(userEmail);
 
   const isDark = theme === "dark";
 
@@ -85,9 +90,12 @@ export default function HeaderRight() {
         )}
       </form>
 
-      <div title="Saved Movies">
+      <div title="Saved Movies" className="relative">
         <Link href={"/savedMovies"}>
           <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
+            {favorites.length}
+          </span>
         </Link>
       </div>
 
@@ -104,16 +112,27 @@ export default function HeaderRight() {
 
       {/* Logout */}
       {session?.user ? (
-        <div className="flex items-center space-x-2">
-          <Image
-            width={30}
-            height={30}
-            src={session?.user.image || ""}
-            alt={session?.user.name || "User Avatar"}
-            className="w-8 h-8 rounded-full"
-          />
-          <span className="text-sm mr-2">{session.user.name}</span>
-        </div>
+        <>
+          <div className="flex items-center space-x-2">
+            <Image
+              width={30}
+              height={30}
+              src={session?.user.image || ""}
+              alt={session?.user.name || "User Avatar"}
+              className="w-8 h-8 rounded-full"
+            />
+            <span className="text-sm mr-2">{session.user.name}</span>
+          </div>
+          <form action={signOutAction}>
+            <Button
+              size="icon"
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 rounded-lg"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </form>
+        </>
       ) : (
         <Button
           size="icon"

@@ -72,7 +72,6 @@ export async function getRecommendedMovies(movieId: string, page: string) {
       `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&page=${page}`
     );
     const data = await res.json();
-    console.log(data);
     return data.results;
   } catch (error) {
     console.log(error);
@@ -85,7 +84,6 @@ export async function getPersonMovies(personId: string) {
       `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${process.env.NEXT_PUBLIC_API_TMDB}`
     );
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -98,7 +96,6 @@ export async function searchMovies(query: string, page: string) {
       `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&query=${query}&page=${page}`
     );
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
