@@ -1,3 +1,4 @@
+import { ProviderTheme } from "@/components/layout/ProviderTheme";
 import "../globals.css";
 
 export default function AuthLayout({
@@ -7,8 +8,8 @@ export default function AuthLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex items-center justify-center bg-muted">
-        {children}
+      <body className="min-h-screen flex items-center justify-center ">
+        <ProviderTheme>{children}</ProviderTheme>
       </body>
     </html>
   );

@@ -1,15 +1,20 @@
 import Image from "next/image";
 import { signInAction } from "@/lib/actions";
 
+export const metadata = {
+  title: "Login - Movie App",
+  description: "Login to access your favorite movies",
+};
+
 function page() {
   return (
     <div className="flex flex-col gap-10 mt-10 items-center ">
       <h2 className="text-3xl font-semibold">
-        Sign in to access your guest area
+        Sign in to access your favorite movies
       </h2>
 
       <form action={signInAction}>
-        <button className="flex items-center gap-6 text-lg border border-primary-300 px-10 py-4 font-medium">
+        <button className="cursor-pointer flex items-center gap-6 text-lg border-2 border-primary-300 px-10 py-4 font-medium">
           <Image
             src="https://authjs.dev/img/providers/google.svg"
             alt="Google logo"

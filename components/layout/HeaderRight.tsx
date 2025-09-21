@@ -93,9 +93,11 @@ export default function HeaderRight() {
       <div title="Saved Movies" className="relative">
         <Link href={"/savedMovies"}>
           <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
-          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
-            {favorites.length}
-          </span>
+          {session?.user && (
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
+              {favorites.length}
+            </span>
+          )}
         </Link>
       </div>
 

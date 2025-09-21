@@ -17,6 +17,16 @@ import type { Movie, MovieVideo } from "@/types/type";
 import MovieCard from "@/components/layout/MovieCard";
 import PageToggler from "@/components/layout/PageToggler";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import {
   useAddFavorite,
   useFavorites,
   useRemoveFavorite,
@@ -24,6 +34,7 @@ import {
 import { useSession } from "next-auth/react";
 
 export default function MovieDetail() {
+  const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -296,7 +307,11 @@ export default function MovieDetail() {
                     isFavorite ? "Remove from favorites" : "Add to favorites"
                   }
                   className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
-                  onClick={() => handleToggleFavorite(movie.id.toString())}
+                  onClick={
+                    session?.user
+                      ? () => handleToggleFavorite(movie.id.toString())
+                      : () => setOpen(true)
+                  }
                 >
                   {isAdding || removing ? (
                     <FaSpinner className="animate-spin" />
@@ -306,6 +321,30 @@ export default function MovieDetail() {
                     <Heart className="w-4 h-4 text-red-600" />
                   )}
                 </Button>
+
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Login Required</DialogTitle>
+                      <DialogDescription>
+                        You need to login first to add movies to your favorites.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setOpen(false);
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Login
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
 
                 <TrailerModal
                   isOpen={isModalOpen}
