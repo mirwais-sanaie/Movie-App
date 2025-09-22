@@ -11,7 +11,9 @@ function MovieList({ movies, discover = "None" }: MovieListProps) {
     <div className="flex flex-col">
       <h1 className="flex flex-col uppercase">
         <span className="text-3xl">{discover}</span>
-        <span className="text-sm text-secondary-foreground mb-5">movies</span>
+        <span className="text-sm text-secondary-foreground mb-5 lg:mb-0">
+          movies
+        </span>
       </h1>
 
       <div

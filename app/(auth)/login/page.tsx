@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { signInAction } from "@/lib/actions";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
   title: "Login - Movie App",
@@ -9,7 +12,13 @@ export const metadata = {
 function page() {
   return (
     <div className="flex flex-col gap-10 mt-10 items-center ">
-      <h2 className="text-3xl font-semibold">
+      <Button className="absolute top-5 left-5">
+        <Link href={"/"} className="flex items-center gap-2">
+          <ArrowLeft />
+          Home
+        </Link>
+      </Button>
+      <h2 className="text-2xl lg:text-3xl font-semibold text-center">
         Sign in to access your favorite movies
       </h2>
 

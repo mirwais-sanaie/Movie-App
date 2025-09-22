@@ -37,7 +37,14 @@ export default function MovieCard({ movie }: { movie: Movie }) {
   }
 
   return (
-    <div onClick={handleMovieDetail} className="cursor-pointer">
+    <div
+      onClick={handleMovieDetail}
+      className="
+    cursor-pointer
+    active:scale-95 sm:active:scale-100
+    transition-transform duration-150
+  "
+    >
       <Card className="w-full hover:scale-[1.03] transition-transform rounded-none bg-muted border-none shadow-none overflow-hidden hover:bg-input duration-100 p-0">
         {/* Poster */}
         <div className="relative w-full aspect-[2/3]">

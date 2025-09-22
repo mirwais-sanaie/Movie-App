@@ -90,7 +90,7 @@ export default function HeaderRight() {
         )}
       </form>
 
-      <div title="Saved Movies" className="relative">
+      <div title="Saved Movies" className="relative hidden md:flex">
         <Link href={"/savedMovies"}>
           <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
           {session?.user && (
@@ -102,7 +102,7 @@ export default function HeaderRight() {
       </div>
 
       {/* Theme Toggle */}
-      <div className="flex items-center gap-2">
+      <div className="items-center gap-2 hidden md:flex">
         <Sun className="h-4 w-4 text-muted-foreground" />
         <Switch
           checked={isDark}

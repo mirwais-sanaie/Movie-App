@@ -8,6 +8,11 @@ import type { Genre } from "@/types/type";
 import { useGenres } from "@/hooks/useGenres";
 import SmallSpinner from "./SmallSpinner";
 import { useSearchParams } from "next/navigation";
+import { Sun, Moon, Bookmark } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Switch } from "@/components/ui/switch";
+import { useSession } from "next-auth/react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const discoverLinks = [
   {
@@ -32,12 +37,20 @@ export default function Sidebar({
 }: {
   closeSidebar?: () => void;
 }) {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
   const searchParams = useSearchParams();
   const { data, isLoading, error } = useGenres();
   const genres = data?.genres ?? [];
 
   const genreName = searchParams?.get("name");
   const discoverName = searchParams?.get("category");
+
+  const { data: session } = useSession();
+
+  const userEmail = session?.user?.email || "guest";
+
+  const { data: favorites = [] } = useFavorites(userEmail);
 
   return (
     <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto lg:overflow-visible">
@@ -55,14 +68,41 @@ export default function Sidebar({
         </Link>
       </div>
 
+      <div
+        className="items-center gap-2 flex md:hidden ms-5 mt-2
+      "
+      >
+        <Sun className="h-4 w-4 text-muted-foreground" />
+        <Switch
+          checked={isDark}
+          onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+          className="data-[state=checked]:bg-primary py-2"
+        />
+        <Moon className="h-4 w-4 text-muted-foreground" />
+      </div>
+
+      <div title="Saved Movies" className="relative md:hidden ms-1 my-5 ">
+        <Button variant={"link"}>
+          <Link href={"/savedMovies"} className=" flex items-center space-x-1">
+            <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
+            {session?.user && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                {favorites.length}
+              </span>
+            )}
+            <p>Favorite movies</p>
+          </Link>
+        </Button>
+      </div>
+
       {/* Discover & Genres */}
-      <nav className="flex-1 px-4 py-6 text-sidebar-primary">
+      <nav className="flex-1 px-4 py-3 text-sidebar-primary">
         {/* Discover */}
         <div>
           <h3 className="text-sm font-semibold mb-2 text-foreground">
             Discover
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {discoverLinks.map((item) => (
               <Button
                 variant={"link"}
@@ -95,7 +135,7 @@ export default function Sidebar({
           {isLoading ? (
             <SmallSpinner />
           ) : (
-            <ul className="space-y-2 flex flex-col text-start">
+            <ul className="space-y-1 flex flex-col text-start">
               {genres?.map((genre: Genre) => (
                 <Button
                   variant={"link"}

@@ -40,7 +40,7 @@ export default function RootLayout({
                 </aside>
 
                 {/* Main content */}
-                <main className="p-6 ">{children}</main>
+                <main className="p-3 lg:p-6">{children}</main>
               </div>
             </ProviderTheme>
             {/* <ReactQueryDevtools initialIsOpen={false} /> */}

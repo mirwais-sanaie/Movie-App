@@ -134,7 +134,7 @@ export default function MovieDetail() {
 
   return (
     <>
-      <div className="min-h-screen text-foreground md:p-10 lg:mx-10">
+      <div className="min-h-screen text-foreground md:p-5 lg:mx-10">
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
           {/* Poster */}
           <div className="relative w-full aspect-[2/3] text-center mx-auto">
@@ -258,8 +258,8 @@ export default function MovieDetail() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 justify-between">
-              <div className="space-x-1 lg:space-x-4 flex items-center ">
+            <div className="flex gap-2 justify-between">
+              <div className="grid gap-y-1 grid-cols-2 xl:grid-cols-4 xl:gap-y-0 space-x-1 lg:space-x-4 items-center ">
                 {movie.homepage && (
                   <Link
                     href={movie.homepage}
@@ -268,7 +268,7 @@ export default function MovieDetail() {
                   >
                     <Button
                       variant={"outline"}
-                      className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto"
+                      className="cursor-pointer lg:py-6 w-23 h-10 lg:w-auto"
                     >
                       Website
                       <Link2 className="w-4 h-4" />
@@ -283,7 +283,7 @@ export default function MovieDetail() {
                   <Button
                     size={"lg"}
                     variant={"outline"}
-                    className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto"
+                    className="cursor-pointer lg:py-6 w-23 h-10 lg:w-auto"
                   >
                     IMDB
                     <FaImdb className="w-4 h-4" />
@@ -293,7 +293,7 @@ export default function MovieDetail() {
                 <Button
                   size={"lg"}
                   variant={"outline"}
-                  className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
+                  className="cursor-pointer lg:py-6 w-23 h-10 lg:w-auto mt-2 lg:mt-0"
                   onClick={() => setIsModalOpen(true)}
                 >
                   Trailer
@@ -301,12 +301,12 @@ export default function MovieDetail() {
                 </Button>
 
                 <Button
-                  size="lg"
+                  size="icon"
                   variant="outline"
                   title={
                     isFavorite ? "Remove from favorites" : "Add to favorites"
                   }
-                  className="cursor-pointer lg:py-6 w-20 h-10 lg:w-auto mt-2 lg:mt-0"
+                  className="w-12 h-12 mt-1 md:mt-0 rounded-full shadow-md border border-red-300 hover:bg-red-50 transition-all duration-300 flex items-center justify-center"
                   onClick={
                     session?.user
                       ? () => handleToggleFavorite(movie.id.toString())
@@ -314,11 +314,11 @@ export default function MovieDetail() {
                   }
                 >
                   {isAdding || removing ? (
-                    <FaSpinner className="animate-spin" />
+                    <FaSpinner className="animate-spin text-red-600 w-5 h-5" />
                   ) : isFavorite ? (
-                    <FaHeart color="red" className="w-4 h-4" />
+                    <FaHeart color="red" className="w-5 h-5" />
                   ) : (
-                    <Heart className="w-4 h-4 text-red-600" />
+                    <Heart className="w-5 h-5 text-red-600" />
                   )}
                 </Button>
 
