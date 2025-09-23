@@ -133,8 +133,8 @@ function Person() {
                 </Link>
               </div>
               <Button
-                size={"lg"}
-                //   onClick={handleBack}
+                size="lg"
+                onClick={() => router.back()}
                 className="bg-primary py-6 flex items-center cursor-pointer gap-2"
               >
                 <ArrowLeft className="w-4 h-4" /> Back

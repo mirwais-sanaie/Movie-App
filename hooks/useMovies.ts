@@ -5,7 +5,7 @@ import {
   getRecommendedMovies,
   searchMovies,
 } from "@/lib/data-services";
-import { Movie } from "@/types/type";
+import { DiscoverResponse } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetMoviesByGenre(page: string, genreId: string) {
@@ -19,7 +19,7 @@ export function useGetMoviesByGenre(page: string, genreId: string) {
 }
 
 export function useGetMoviesByDiscover(discover: string, page: string) {
-  return useQuery<{ results: Movie[] }>({
+  return useQuery<DiscoverResponse>({
     queryKey: ["movies", "discover", discover, page],
     queryFn: () => getMoviesPage(discover, page),
   });
@@ -36,17 +36,20 @@ export function useGetMovieDetail(movieId: string) {
 }
 
 export function useRecommendedMovies(movieId: string, page: string) {
-  const {
-    data: recommendedMovies,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["movie", "recommendations", movieId, page],
     queryFn: () => getRecommendedMovies(movieId, page),
     enabled: !!movieId,
   });
 
-  return { recommendedMovies, isLoading, error };
+  console.log(data);
+
+  return {
+    recommendedMovies: data?.results ?? [],
+    totalPages: data?.total_pages ?? 1,
+    isLoading,
+    error,
+  };
 }
 
 export function useMovies(query: string, page: string) {

@@ -23,7 +23,6 @@ function SearchedMovie() {
     router.push(`/search?searchTerm=${searchTerm}&page=${newPage}`);
   };
 
-  console.log(data);
   return (
     <div className="flex flex-col  mt-11 mb-5 lg:mt-0 lg:mb-0">
       <h1 className="flex flex-col uppercase">
@@ -56,7 +55,7 @@ function SearchedMovie() {
       </div>
 
       <PageToggler
-        totalPages={0}
+        totalPages={data?.total_pages}
         page={Number(page)}
         handlePageChange={handlePageChange}
       />

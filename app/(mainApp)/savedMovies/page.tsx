@@ -38,17 +38,17 @@ async function SavedMovies() {
                 3xl:grid-cols-6
              "
       >
-        {/* {recError && <div>Error loading recommended movies.</div>} */}
         {movies?.map((movie: Movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
-
-      {/* <PageToggler
-        totalPages={0}
-        page={Number(1)}
-        handlePageChange={handlePageChange}
-      /> */}
+      {movies.length === 0 && (
+        <div className="text-center">
+          <h2 className="text-xl text-muted-foreground">
+            No favorite movies found.
+          </h2>
+        </div>
+      )}
     </div>
   );
 }

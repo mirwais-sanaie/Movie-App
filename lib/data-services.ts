@@ -72,7 +72,7 @@ export async function getRecommendedMovies(movieId: string, page: string) {
       `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.NEXT_PUBLIC_API_TMDB}&page=${page}`
     );
     const data = await res.json();
-    return data.results;
+    return data;
   } catch (error) {
     console.log(error);
   }

@@ -19,19 +19,21 @@ export default function PageToggler({
       {totalPages ? (
         <>
           <Button
+            size={"lg"}
             disabled={page <= 1}
             onClick={() => handlePageChange(page - 1)}
           >
+            <ArrowLeft />
             Prev
           </Button>
-          <span className="px-4 py-2">
-            Page {page} of {totalPages}
-          </span>
+          <span className="px-4 py-2">Page {page}</span>
           <Button
+            size={"lg"}
             disabled={page >= totalPages}
             onClick={() => handlePageChange(page + 1)}
           >
             Next
+            <ArrowRight />
           </Button>
         </>
       ) : (

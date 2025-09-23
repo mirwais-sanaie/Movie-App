@@ -11,8 +11,6 @@ import { useSearchParams } from "next/navigation";
 import { Sun, Moon, Bookmark } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
-import { useSession } from "next-auth/react";
-import { useFavorites } from "@/hooks/useFavorites";
 
 const discoverLinks = [
   {
@@ -46,16 +44,10 @@ export default function Sidebar({
   const genreName = searchParams?.get("name");
   const discoverName = searchParams?.get("category");
 
-  const { data: session } = useSession();
-
-  const userEmail = session?.user?.email || "guest";
-
-  const { data: favorites = [] } = useFavorites(userEmail);
-
   return (
     <aside className="relative w-64 h-screen flex flex-col pb-12 overflow-auto lg:overflow-visible">
       {/* Logo */}
-      <div className=" items-center justify-center h-20 hidden md:flex">
+      <div className=" items-center justify-center h-20 flex">
         <Link
           href={{
             pathname: "/",
@@ -85,11 +77,6 @@ export default function Sidebar({
         <Button variant={"link"}>
           <Link href={"/savedMovies"} className=" flex items-center space-x-1">
             <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
-            {session?.user && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
-                {favorites.length}
-              </span>
-            )}
             <p>Favorite movies</p>
           </Link>
         </Button>

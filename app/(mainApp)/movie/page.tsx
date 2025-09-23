@@ -23,7 +23,6 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {
@@ -49,8 +48,7 @@ export default function MovieDetail() {
 
   const userEmail = session?.user?.email || "guest";
 
-  const { data: favorites = [], isLoading: favLoading } =
-    useFavorites(userEmail);
+  const { data: favorites = [] } = useFavorites(userEmail);
   const { mutate: addFavorite, isPending: isAdding } = useAddFavorite();
   const { mutate: removeFavorite, isPending: removing } = useRemoveFavorite();
 
@@ -73,6 +71,7 @@ export default function MovieDetail() {
 
   const {
     recommendedMovies,
+    totalPages,
     isLoading: recLoading,
     error: recError,
   } = useRecommendedMovies(movieId || "", page || "1");
@@ -353,8 +352,9 @@ export default function MovieDetail() {
                 />
               </div>
               <Button
-                onClick={handleBack}
-                className="bg-primary lg:py-6 w-20 h-10 lg:w-auto flex items-center cursor-pointer gap-2"
+                size="lg"
+                onClick={() => router.back()}
+                className="bg-primary py-6 flex items-center cursor-pointer gap-2"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </Button>
@@ -398,7 +398,7 @@ export default function MovieDetail() {
         </div>
 
         <PageToggler
-          totalPages={0}
+          totalPages={totalPages}
           page={Number(page)}
           handlePageChange={handlePageChange}
         />

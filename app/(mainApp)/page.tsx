@@ -29,6 +29,7 @@ export default function Home() {
     discover,
     String(page)
   );
+  console.log(data);
 
   if (isLoading) return <Spinner />;
   if (isError) return <p>Something went wrong!</p>;
@@ -42,7 +43,7 @@ export default function Home() {
       <MovieList discover={discover} movies={data?.results || []} />
 
       <PageToggler
-        totalPages={0}
+        totalPages={data?.total_pages ?? 1}
         page={page}
         handlePageChange={handlePageChange}
       />

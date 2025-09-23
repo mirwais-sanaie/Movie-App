@@ -3,6 +3,13 @@ export type Genre = {
   name: string;
 };
 
+export type DiscoverResponse = {
+  page: number;
+  results: Movie[]; // ✅ results is an array of Movie
+  total_pages: number;
+  total_results: number;
+};
+
 export type Movie = {
   adult: boolean;
   backdrop_path: string | null;
