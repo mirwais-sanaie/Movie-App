@@ -30,7 +30,6 @@ export default function RootLayout({
           <ProviderQuery>
             <ProviderTheme>
               <div className="grid grid-rows-[auto_1fr] lg:grid-cols-[250px_1fr] min-h-screen">
-                {/* Header always on top */}
                 <header className="lg:col-span-2">
                   <Header />
                 </header>
