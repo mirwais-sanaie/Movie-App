@@ -5,7 +5,7 @@ import { auth, signIn, signOut } from "./auth";
 
 // Sign in with Google
 export async function signInAction() {
-  await signIn("google", { redirectTo: "/savedMovies" });
+  await signIn("google", { redirectTo: "/" });
 }
 
 // Sign out

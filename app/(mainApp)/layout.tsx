@@ -6,6 +6,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import { ProviderTheme } from "@/components/layout/ProviderTheme";
 import ProviderQuery from "@/components/layout/ProviderQuery";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
 
 const DmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -43,7 +44,7 @@ export default function RootLayout({
                 <main className="p-3 lg:p-6">{children}</main>
               </div>
             </ProviderTheme>
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            <Toaster position="top-right" reverseOrder={false} />
           </ProviderQuery>
         </SessionProvider>
       </body>

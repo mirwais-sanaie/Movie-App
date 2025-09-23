@@ -75,7 +75,11 @@ export default function Sidebar({
 
       <div title="Saved Movies" className="relative md:hidden ms-1 my-5 ">
         <Button variant={"link"}>
-          <Link href={"/savedMovies"} className=" flex items-center space-x-1">
+          <Link
+            onClick={closeSidebar}
+            href={"/savedMovies"}
+            className=" flex items-center space-x-1"
+          >
             <Bookmark className="cursor-pointer hover:opacity-55 duration-200" />
             <p>Favorite movies</p>
           </Link>
