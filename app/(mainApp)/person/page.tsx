@@ -145,7 +145,7 @@ function Person() {
       </div>
 
       <div className="flex flex-col">
-        <h1 className="flex flex-col uppercase">
+        <h1 className="flex flex-col uppercase  mt-11 mb-5 lg:mt-0 lg:mb-0">
           <span className="text-3xl">Also Enters in</span>
           <span className="text-sm text-secondary-foreground mb-2">movies</span>
         </h1>

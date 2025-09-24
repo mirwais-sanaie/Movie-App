@@ -42,8 +42,6 @@ export function useRecommendedMovies(movieId: string, page: string) {
     enabled: !!movieId,
   });
 
-  console.log(data);
-
   return {
     recommendedMovies: data?.results ?? [],
     totalPages: data?.total_pages ?? 1,

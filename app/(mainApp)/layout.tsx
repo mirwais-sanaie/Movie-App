@@ -14,7 +14,10 @@ const DmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Movie App",
+  title: {
+    default: "Movie App",
+    template: "%s | Movie App",
+  },
   description: "Movie App with Sidebar and Header",
 };
 

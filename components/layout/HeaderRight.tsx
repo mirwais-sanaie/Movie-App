@@ -140,14 +140,14 @@ export default function HeaderRight() {
 
           {/* Logout Confirm Modal */}
           <Dialog open={openLogoutModal} onOpenChange={setOpenLogoutModal}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md bg-muted">
               <DialogHeader>
-                <DialogTitle>Confirm Logout</DialogTitle>
+                <DialogTitle className="text-left">Confirm Logout</DialogTitle>
               </DialogHeader>
               <p className="text-sm text-muted-foreground">
                 Are you sure you want to log out?
               </p>
-              <DialogFooter className="flex flex-row justify-center gap-2 mt-4">
+              <DialogFooter className="flex flex-row justify-end gap-2 mt-4">
                 <Button
                   variant="outline"
                   onClick={() => setOpenLogoutModal(false)}
@@ -155,10 +155,7 @@ export default function HeaderRight() {
                   Cancel
                 </Button>
                 <form action={signOutAction}>
-                  <Button
-                    type="submit"
-                    className="bg-red-600 text-white hover:bg-red-700"
-                  >
+                  <Button type="submit" className="bg-destructive text-white">
                     Yes, Logout
                   </Button>
                 </form>
